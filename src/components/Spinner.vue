@@ -7,10 +7,14 @@
 </template>
 
 <script>
-export default {
+import { Vue, Component, Prop } from "vue-property-decorator";
+@Component({
   name: 'spinner',
-  props: ['show'],
   serverCacheKey: props => props.show
+})
+export default class Spinner extends Vue {
+  @Prop()
+  show;
 }
 </script>
 

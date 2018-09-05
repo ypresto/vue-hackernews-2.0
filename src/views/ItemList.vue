@@ -19,42 +19,56 @@
 </template>
 
 <script>
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { watchList } from '../api'
 import Item from '../components/Item.vue'
 
-export default {
+@Component({
   name: 'item-list',
 
   components: {
     Item
   },
 
-  props: {
-    type: String
-  },
+  watch: {
+    page (to, from) {
+      this.loadItems(to, from)
+    }
+  }
+})
+export default class ItemList extends Vue {
+  @Prop(String)
+  type;
 
-  data () {
+  transition = 'slide-right';
+
+  // vue-convert: This property will initialized in data() method, with `this` reference.
+  displayedPage = undefined;
+
+  // vue-convert: This property will initialized in data() method, with `this` reference.
+  displayedItems = undefined;
+
+  data() {
     return {
-      transition: 'slide-right',
       displayedPage: Number(this.$route.params.page) || 1,
       displayedItems: this.$store.getters.activeItems
-    }
-  },
+    };
+  }
 
-  computed: {
-    page () {
-      return Number(this.$route.params.page) || 1
-    },
-    maxPage () {
-      const { itemsPerPage, lists } = this.$store.state
-      return Math.ceil(lists[this.type].length / itemsPerPage)
-    },
-    hasMore () {
-      return this.page < this.maxPage
-    }
-  },
+  get page() {
+    return Number(this.$route.params.page) || 1
+  }
 
-  beforeMount () {
+  get maxPage() {
+    const { itemsPerPage, lists } = this.$store.state
+    return Math.ceil(lists[this.type].length / itemsPerPage)
+  }
+
+  get hasMore() {
+    return this.page < this.maxPage
+  }
+
+  beforeMount() {
     if (this.$root._isMounted) {
       this.loadItems(this.page)
     }
@@ -65,36 +79,28 @@ export default {
         this.displayedItems = this.$store.getters.activeItems
       })
     })
-  },
+  }
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.unwatchList()
-  },
+  }
 
-  watch: {
-    page (to, from) {
-      this.loadItems(to, from)
-    }
-  },
-
-  methods: {
-    loadItems (to = this.page, from = -1) {
-      this.$bar.start()
-      this.$store.dispatch('FETCH_LIST_DATA', {
-        type: this.type
-      }).then(() => {
-        if (this.page < 0 || this.page > this.maxPage) {
-          this.$router.replace(`/${this.type}/1`)
-          return
-        }
-        this.transition = from === -1
-          ? null
-          : to > from ? 'slide-left' : 'slide-right'
-        this.displayedPage = to
-        this.displayedItems = this.$store.getters.activeItems
-        this.$bar.finish()
-      })
-    }
+  loadItems(to = this.page, from = -1) {
+    this.$bar.start()
+    this.$store.dispatch('FETCH_LIST_DATA', {
+      type: this.type
+    }).then(() => {
+      if (this.page < 0 || this.page > this.maxPage) {
+        this.$router.replace(`/${this.type}/1`)
+        return
+      }
+      this.transition = from === -1
+        ? null
+        : to > from ? 'slide-left' : 'slide-right'
+      this.displayedPage = to
+      this.displayedItems = this.$store.getters.activeItems
+      this.$bar.finish()
+    })
   }
 }
 </script>
