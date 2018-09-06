@@ -10,7 +10,8 @@
 </template>
 
 <script>
-export default {
+import Vue from "vue";
+export default Vue.extend({
   data () {
     return {
       percent: 0,
@@ -22,6 +23,7 @@ export default {
       failedColor: '#ff0000',
     }
   },
+
   methods: {
     start () {
       this.show = true
@@ -83,7 +85,7 @@ export default {
       return this
     }
   }
-}
+});
 </script>
 
 <style lang="stylus" scoped>

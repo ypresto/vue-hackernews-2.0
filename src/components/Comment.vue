@@ -19,23 +19,27 @@
 </template>
 
 <script>
-export default {
+import Vue from "vue";
+export default Vue.extend({
   name: 'comment',
   props: ['id'],
+
   data () {
     return {
       open: true
     }
   },
+
   computed: {
     comment () {
       return this.$store.state.items[this.id]
     }
   },
+
   methods: {
     pluralize: n => n + (n === 1 ? ' reply' : ' replies')
   }
-}
+});
 </script>
 
 <style lang="stylus">

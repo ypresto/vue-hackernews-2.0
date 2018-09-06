@@ -27,16 +27,18 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { timeAgo } from '../util/filters'
 
-export default {
+export default Vue.extend({
   name: 'news-item',
   props: ['item'],
+
   // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`
   }
-}
+});
 </script>
 
 <style lang="stylus">

@@ -7,11 +7,12 @@
 </template>
 
 <script>
-export default {
+import Vue from "vue";
+export default Vue.extend({
   name: 'spinner',
   props: ['show'],
   serverCacheKey: props => props.show
-}
+});
 </script>
 
 <style lang="stylus">

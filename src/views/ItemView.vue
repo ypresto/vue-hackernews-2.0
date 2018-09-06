@@ -28,10 +28,11 @@
 </template>
 
 <script>
+import Vue from "vue";
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
 
-export default {
+export default Vue.extend({
   name: 'item-view',
   components: { Spinner, Comment },
 
@@ -78,7 +79,7 @@ export default {
       })
     }
   }
-}
+});
 
 // recursively fetch all descendent comments
 function fetchComments (store, item) {

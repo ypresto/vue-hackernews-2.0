@@ -19,10 +19,11 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { watchList } from '../api'
 import Item from '../components/Item.vue'
 
-export default {
+export default Vue.extend({
   name: 'item-list',
 
   components: {
@@ -96,7 +97,7 @@ export default {
       })
     }
   }
-}
+});
 </script>
 
 <style lang="stylus">
