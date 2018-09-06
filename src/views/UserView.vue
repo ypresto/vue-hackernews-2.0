@@ -20,20 +20,21 @@
 
 <script>
 
-export default {
-  name: 'user-view',
+import { Vue, Component } from "vue-property-decorator";
 
-  computed: {
-    user () {
-      return this.$store.state.users[this.$route.params.id]
-    }
-  },
+@Component({
+  name: 'user-view'
+})
+export default class UserView extends Vue {
+  get user() {
+    return this.$store.state.users[this.$route.params.id]
+  }
 
-  asyncData ({ store, route: { params: { id }}}) {
+  asyncData({ store, route: { params: { id }}}) {
     return store.dispatch('FETCH_USER', { id })
-  },
+  }
 
-  title () {
+  title() {
     return this.user
       ? this.user.id
       : 'User not found'

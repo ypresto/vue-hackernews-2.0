@@ -19,21 +19,22 @@
 </template>
 
 <script>
-export default {
-  name: 'comment',
-  props: ['id'],
-  data () {
-    return {
-      open: true
-    }
-  },
-  computed: {
-    comment () {
-      return this.$store.state.items[this.id]
-    }
-  },
-  methods: {
-    pluralize: n => n + (n === 1 ? ' reply' : ' replies')
+import { Vue, Component, Prop } from "vue-property-decorator";
+@Component({
+  name: 'comment'
+})
+export default class Comment extends Vue {
+  @Prop()
+  id;
+
+  open = true;
+
+  get comment() {
+    return this.$store.state.items[this.id]
+  }
+
+  pluralize(n) {
+    return n + (n === 1 ? ' reply' : ' replies');
   }
 }
 </script>

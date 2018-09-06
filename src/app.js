@@ -5,6 +5,14 @@ import { createRouter } from './router'
 import { sync } from 'vuex-router-sync'
 import titleMixin from './util/title'
 import * as filters from './util/filters'
+import { Component } from "vue-property-decorator";
+
+Component.registerHooks([
+  'asyncData',
+  'beforeRouteEnter',
+  'beforeRouteLeave',
+  'beforeRouteUpdate'
+])
 
 // mixin for handling title
 Vue.mixin(titleMixin)

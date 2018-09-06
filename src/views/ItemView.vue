@@ -28,55 +28,51 @@
 </template>
 
 <script>
+import { Vue, Component } from "vue-property-decorator";
 import Spinner from '../components/Spinner.vue'
 import Comment from '../components/Comment.vue'
 
-export default {
+@Component({
   name: 'item-view',
   components: { Spinner, Comment },
-
-  data: () => ({
-    loading: true
-  }),
-
-  computed: {
-    item () {
-      return this.$store.state.items[this.$route.params.id]
-    }
-  },
-
-  // We only fetch the item itself before entering the view, because
-  // it might take a long time to load threads with hundreds of comments
-  // due to how the HN Firebase API works.
-  asyncData ({ store, route: { params: { id }}}) {
-    return store.dispatch('FETCH_ITEMS', { ids: [id] })
-  },
-
-  title () {
-    return this.item.title
-  },
-
-  // Fetch comments when mounted on the client
-  beforeMount () {
-    this.fetchComments()
-  },
 
   // refetch comments if item changed
   watch: {
     item: 'fetchComments'
-  },
+  }
+})
+export default class ItemView extends Vue {
+  loading = true;
 
-  methods: {
-    fetchComments () {
-      if (!this.item || !this.item.kids) {
-        return
-      }
+  get item() {
+    return this.$store.state.items[this.$route.params.id]
+  }
 
-      this.loading = true
-      fetchComments(this.$store, this.item).then(() => {
-        this.loading = false
-      })
+  // We only fetch the item itself before entering the view, because
+  // it might take a long time to load threads with hundreds of comments
+  // due to how the HN Firebase API works.
+  asyncData({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_ITEMS', { ids: [id] })
+  }
+
+  title() {
+    return this.item.title
+  }
+
+  // Fetch comments when mounted on the client
+  beforeMount() {
+    this.fetchComments()
+  }
+
+  fetchComments() {
+    if (!this.item || !this.item.kids) {
+      return
     }
+
+    this.loading = true
+    fetchComments(this.$store, this.item).then(() => {
+      this.loading = false
+    })
   }
 }
 

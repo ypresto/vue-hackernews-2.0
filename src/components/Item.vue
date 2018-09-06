@@ -27,15 +27,20 @@
 </template>
 
 <script>
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { timeAgo } from '../util/filters'
 
-export default {
+@Component({
   name: 'news-item',
-  props: ['item'],
+
   // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`
   }
+})
+export default class NewsItem extends Vue {
+  @Prop()
+  item;
 }
 </script>
 
