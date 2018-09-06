@@ -20,7 +20,9 @@
 
 <script>
 
-export default {
+import Vue from "vue";
+
+export default Vue.extend({
   name: 'user-view',
 
   computed: {
@@ -38,7 +40,7 @@ export default {
       ? this.user.id
       : 'User not found'
   }
-}
+});
 </script>
 
 <style lang="stylus">
